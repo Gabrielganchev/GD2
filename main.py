@@ -1,6 +1,13 @@
-import pygame, sys
+import pygame, sys, Funk
 from tileC import Tile
+from object_classes import *
+
 pygame.init()
+pygame.font.init()
+
+
+
+
 
 invalids =   (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,
              19,37,55,73,91,109,127,145,163,181,
@@ -22,6 +29,9 @@ clock = pygame.time.Clock()
 FPS = 24
 total_frames = 0
 
+zombie1 = Zombie(200,240)
+survivor = Survivor(400,120)
+
 
 while True:
     for event in pygame.event.get():
@@ -31,5 +41,13 @@ while True:
 
 
     Tile.draw_tiles(screen)
+    survivor.draw(screen)
+    Zombie.draw_zombies(screen)
+
+    print survivor.get_number()
+    print zombie1.get_number()
+
+
     pygame.display.flip()
     clock.tick(FPS)
+    total_frames += 1

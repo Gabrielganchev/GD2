@@ -1,9 +1,10 @@
-import pygame
+import pygame, Funk
 
 class Tile(pygame.Rect):
     List = []
     width, height = 40, 40
     total_titles = 1
+    H, V = 1, 18
 
     def __init__(self, x, y, Type):
         self.type = Type
@@ -28,5 +29,6 @@ class Tile(pygame.Rect):
             if not(tile.type == "empty"):
                 pygame.draw.rect(screen,[40,40,40], tile)
 
+            Funk.text_to_screen(screen,tile.number,tile.x,tile.y)
 
 
