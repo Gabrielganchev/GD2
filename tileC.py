@@ -54,9 +54,9 @@ class Tile(pygame.Rect):
 
         for tile in Tile.List:
             pass
-
-            #if not(tile.type == 'empty'):
-            #pygame.draw.rect(screen, [40, 40, 40], tile )
+# ctrl + shft + / is for comment in short cuts in Windows and Linux if you dont  know
+            # if not(tile.type == 'empty'):
+            #     pygame.draw.rect(screen, [40, 40, 40], tile )
 
             # if tile.G != 0:
             #   Funk.text_to_screen(screen, tile.G, tile.x, tile.y + half, color = [120, 157, 40])
