@@ -22,12 +22,14 @@ FPS = 20
 total_frames = 0
 
 # zombie1 = Zombie(80, 80)
+
+dungeon = pygame.image.load('images/dungeon.jpg')
 survivor = Survivor(32 * 2, 32 * 4)
 
 
 while True:
+    screen.blit(dungeon,(0,0))
 
-    screen.fill([0,0,0])
     A_Star(screen, survivor, total_frames, FPS)
     interaction(screen, survivor)
     Tile.draw_tiles(screen)

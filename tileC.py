@@ -53,9 +53,10 @@ class Tile(pygame.Rect):
         half = Tile.width / 2
 
         for tile in Tile.List:
+            pass
 
-            if not(tile.type == 'empty'):
-                pygame.draw.rect(screen, [40, 40, 40], tile )
+            #if not(tile.type == 'empty'):
+            #pygame.draw.rect(screen, [40, 40, 40], tile )
 
             # if tile.G != 0:
             #   Funk.text_to_screen(screen, tile.G, tile.x, tile.y + half, color = [120, 157, 40])
@@ -64,4 +65,4 @@ class Tile(pygame.Rect):
             # if tile.F != 0:
             #   Funk.text_to_screen(screen, tile.F, tile.x + half, tile.y, color = [56, 177, 177])
 
-            Funk.text_to_screen(screen, tile.number, tile.x, tile.y)
+            #Funk.text_to_screen(screen, tile.number, tile.x, tile.y)
