@@ -29,6 +29,7 @@ survivor = Survivor(32 * 2, 32 * 4)
 
 while True:
     screen.blit(dungeon,(0,0))
+    Zombie.spawn(total_frames, FPS)
 
     A_Star(screen, survivor, total_frames, FPS)
     interaction(screen, survivor)
