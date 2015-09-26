@@ -142,6 +142,9 @@ def A_Star(screen, survivor, total_frames, FPS):
 
     for zombie in Zombie.List:
 
+        if zombie.tx != None or zombie.ty != None:
+            continue
+
         open_list = []
         closed_list = []
 
@@ -185,7 +188,5 @@ def A_Star(screen, survivor, total_frames, FPS):
             [tile.x + half - 2, tile.y + half - 2], 5 )
 
         if len(return_tiles) > 1:
-
-                next_tile = return_tiles[-1]
-                zombie.set_target(next_tile)
-
+            next_tile = return_tiles[-1]
+            zombie.set_target(next_tile)
