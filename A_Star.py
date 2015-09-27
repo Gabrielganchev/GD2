@@ -1,11 +1,13 @@
+# import pygame  # this is imported, but not used
+from Zombie import Zombie
+from Tile import Tile
 
-import pygame
-from object_classes import *
-from tileC import Tile
+__author__ = 'William_Fiset, Alex Mason'
 
-def A_Star(screen, survivor, total_frames, FPS):
 
-    half = Tile.width / 2
+def AStar(survivor, total_frames, FPS):
+
+    # half = Tile.width / 2  # this is assigned, but not used
 
     N = -22
     S = 22
@@ -17,9 +19,9 @@ def A_Star(screen, survivor, total_frames, FPS):
     SE = 23
     SW = 21
 
-    for tile in Tile.List:
+    for tile in Tile.list_:
         tile.parent = None
-        tile.H, tile.G, tile.F = 0,0,0
+        tile.H, tile.G, tile.F = 0, 0, 0
 
     def blocky(tiles, diagonals, surrounding_node):
         if surrounding_node.number not in diagonals:
@@ -28,7 +30,7 @@ def A_Star(screen, survivor, total_frames, FPS):
 
     def get_surrounding_tiles(base_node):
 
-        array =(
+        array = (
             (base_node.number + N),
             (base_node.number + NE),
             (base_node.number + E),
@@ -48,10 +50,11 @@ def A_Star(screen, survivor, total_frames, FPS):
 
             surrounding_tile = Tile.get_tile(tile_number)
 
-            if tile_number not in range(1, Tile.total_tiles + 1):
+            if tile_number not in list(range(1, Tile.total_tiles + 1)):
                 continue
 
-            if surrounding_tile.walkable and surrounding_tile not in closed_list:
+            if (surrounding_tile.walkable and
+                surrounding_tile not in closed_list):
                 # tiles.append(surrounding_tile) # Diagonal movement
                 tiles = blocky(tiles, diagonals, surrounding_tile)
 
@@ -67,23 +70,28 @@ def A_Star(screen, survivor, total_frames, FPS):
             tile.G = tile.parent.G + 14
 
     def H():
-        for tile in Tile.List:
-            tile.H = 10 * (abs(tile.x - survivor.x) + abs(tile.y - survivor.y)) / Tile.width
+        for tile in Tile.list_:
+            absX = abs(tile.x - survivor.x)
+            absY = abs(tile.y - survivor.y)
+            tile.H = 10 * (absX + absY) / Tile.TILE_SIZE
 
     def F(tile):
         # F = G + H
         tile.F = tile.G + tile.H
 
     def swap(tile):
+
         open_list.remove(tile)
         closed_list.append(tile)
 
-    def get_LFT(): # get Lowest F Value
+
+    def get_LFT():  # get Lowest F Value
 
         F_Values = []
         for tile in open_list:
             F_Values.append(tile.F)
 
+        # Reverse List
         o = open_list[::-1]
 
         for tile in o:
@@ -132,17 +140,13 @@ def A_Star(screen, survivor, total_frames, FPS):
             G(node)
             F(node)
 
-            # pygame.draw.line(screen, [255, 0, 0],
-            # [node.parent.x + half, node.parent.y + half],
-            # [node.x + half, node.y + half] )
-
         loop()
 
+    #TODO: add relevant comment here
 
+    for zombie in Zombie.list_:
 
-    for zombie in Zombie.List:
-
-        if zombie.tx != None or zombie.ty != None:
+        if zombie.isMoving():  # zombie.dx != 0 or zombie.dy != 0:
             continue
 
         open_list = []
@@ -177,15 +181,11 @@ def A_Star(screen, survivor, total_frames, FPS):
 
             parent = parent.parent
 
-            if parent == None:
+            if parent is None:
                 break
 
             if parent.number == zombie.get_number():
                 break
-
-        for tile in return_tiles:
-            pygame.draw.circle(screen, [34, 95, 200],
-            [tile.x + half - 2, tile.y + half - 2], 5 )
 
         if len(return_tiles) > 1:
             next_tile = return_tiles[-1]
