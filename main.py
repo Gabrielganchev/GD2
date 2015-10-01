@@ -1,42 +1,90 @@
+"""
+This is the startpoint of the application, build and run to execute program.
 
-import pygame, sys, Funk
-from tileC import Tile
-from object_classes import *
-from interaction import interaction
-from A_Star import A_Star
+"""
 
+import pygame
+import miscellaneous
+import worldCreator
+
+from EventResponder import *
+from Tile import Tile
+from Zombie import Zombie
+from Survivor import Survivor
+from Bullet import Bullet
+from AStar import AStar
+from time import sleep
+
+
+
+__author__ = 'William Fiset, Alex Mason'
+
+
+# Initialize pygame
 pygame.init()
 pygame.font.init()
+pygame.mixer.init()
 
-screen = pygame.display.set_mode((704, 448)) # 32, 32
+pygame.display.set_caption("Zombie - Survival")
 
-for y in range(0, screen.get_height(), 32):
-    for x in range(0, screen.get_width(), 32):
-        if Tile.total_tiles in Tile.invalids:
-            Tile(x, y, 'solid')
-        else:
-            Tile(x, y, 'empty')
+# Startup game theme
+# pygame.mixer.music.load('audio/zombie_theme.ogg')
+# pygame.mixer.music.play(-1)
 
-clock = pygame.time.Clock()
-FPS = 20
+# Creates a world from the text file called map.txt
+worldCreator.create_world("map.txt")
+
+# Global Game constants
+SCREEN_WIDTH = Tile.TILE_SIZE * 22
+SCREEN_HEIGHT = Tile.TILE_SIZE * 14
+WORLD_WIDTH, WORLD_HEIGHT = worldCreator.get_dimension()
+
+
+# Local constants
+PAUSE_TIME   = 2.5  # seconds
+FPS          = 20
+
 total_frames = 0
+screen       = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+clock        = pygame.time.Clock()
+survivor     = Survivor(Tile.TILE_SIZE * 2, Tile.TILE_SIZE * 4)
 
-# zombie1 = Zombie(80, 80)
+avg = 0
 
-dungeon = pygame.image.load('images/dungeon.jpg')
-survivor = Survivor(32 * 2, 32 * 4)
+while survivor.health > 0:
 
 
-while True:
-    screen.blit(dungeon,(0,0))
+    # USER INPUT
+
+    EventResponder.userInteraction(screen, survivor)
+
+    # UPDATE GAME
+
+    AStar(survivor, total_frames, FPS)
     Zombie.spawn(total_frames, FPS)
+    survivor.movement()
 
-    A_Star(screen, survivor, total_frames, FPS)
-    interaction(screen, survivor)
-    Tile.draw_tiles(screen)
+    # RENDING ACTIONS
+
+    Tile.update(screen)
+    Bullet.update(screen)
+    Zombie.update(screen, survivor)
     survivor.draw(screen)
-    Zombie.draw_zombies(screen)
+    miscellaneous.display_health_bar(screen, survivor.health , SCREEN_WIDTH)
 
     pygame.display.flip()
     clock.tick(FPS)
+
     total_frames += 1
+
+
+
+
+miscellaneous.display_end_game_screen(screen, PAUSE_TIME)
+
+sleep(PAUSE_TIME)
+
+
+
+
+
